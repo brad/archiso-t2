@@ -19,7 +19,7 @@ jobs:
         sudo -u builduser bash -c './build.sh'
         EOF
 
-        docker run -t -v $PWD:/build --priveleged archlinux /bin/bash /build/entrypoint.sh
+        docker run -t -v $PWD:/build archlinux --priveleged /bin/bash /build/entrypoint.sh
     
     - name: Upload Built ISO
       uses: actions/upload-artifact@v2
