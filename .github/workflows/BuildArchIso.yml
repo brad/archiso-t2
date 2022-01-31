@@ -27,3 +27,23 @@ jobs:
       with:
         name: built-iso
         path: ${{ github.workspace }}/out/archlinux-t2mac-*.iso
+
+    - name: Create Tag
+      id: create_tag
+      if: ${{ github.ref == 'refs/heads/senpai' && !contains(github.event.head_commit.message, '[no rel]') }}
+      run: |
+        echo "::set-output name=tag::${date +%Y.%m.%d}"
+        date +%Y.%m.%d
+    - name: Release
+      if: ${{ github.ref == 'refs/heads/senpai' && !contains(github.event.head_commit.message, '[no rel]') }}
+      uses: softprops/action-gh-release@v1
+      with:
+         files: |
+           ${{ github.workspace }}/out/archlinux-t2mac-*.iso
+         tag_name: steps.create_tag.outputs.tag
+         draft: ${{ contains(github.event.head_commit.message, '[draft]') }}
+         prerelease: ${{ contains(github.event.head_commit.message, '[prerel]') }}
+         body: |
+           Follow [this](https://wiki.t2linux.org/distributions/arch/installation/) guide using this ISO to install Arch on your T2 Mac 
+      env:
+         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
