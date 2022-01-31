@@ -19,10 +19,10 @@ jobs:
         sudo -u builduser bash -c './build.sh'
         EOF
 
-        docker run -t -v $PWD:/build archlinux --priveleged /bin/bash /build/entrypoint.sh
+        docker run --priveleged -t -v $PWD:/build archlinux /bin/bash /build/entrypoint.sh
     
     - name: Upload Built ISO
       uses: actions/upload-artifact@v2
       with:
         name: built-iso
-        path: ${{ github.workspace }}/out/archlinux*.iso
+        path: ${{ github.workspace }}/out/archlinux-t2mac-*.iso
