@@ -31,15 +31,16 @@ jobs:
       id: create_tag
       if: ${{ github.ref == 'refs/heads/senpai' && !contains(github.event.head_commit.message, '[no rel]') }}
       run: |
-        echo "::set-output name=tag::${date +%Y.%m.%d}"
-        date +%Y.%m.%d
+        export TAG=$(date +%Y.%m.%d)
+        echo "::set-output name=tag::${TAG}"
+        echo $TAG
     - name: Release
       if: ${{ github.ref == 'refs/heads/senpai' && !contains(github.event.head_commit.message, '[no rel]') }}
       uses: softprops/action-gh-release@v1
       with:
          files: |
            ${{ github.workspace }}/out/archlinux-t2mac-*.iso
-         tag_name: steps.create_tag.outputs.tag
+         tag_name: ${{ steps.create_tag.outputs.tag }}
          draft: ${{ contains(github.event.head_commit.message, '[draft]') }}
          prerelease: ${{ contains(github.event.head_commit.message, '[prerel]') }}
          body: |
