@@ -27,7 +27,6 @@ jobs:
       with:
         name: built-iso
         path: ${{ github.workspace }}/out/archlinux-t2mac-*.iso
-
     - name: Create Tag
       id: create_tag
       if: ${{ github.ref == 'refs/heads/senpai' && !contains(github.event.head_commit.message, '[no rel]') }}
