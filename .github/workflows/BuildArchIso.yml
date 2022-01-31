@@ -40,7 +40,7 @@ jobs:
       with:
          files: |
            ${{ github.workspace }}/out/archlinux-t2mac-*.iso
-         tag_name: steps.create_tag.outputs.tag
+         tag_name: ${{ steps.create_tag.outputs.tag }}
          draft: ${{ contains(github.event.head_commit.message, '[draft]') }}
          prerelease: ${{ contains(github.event.head_commit.message, '[prerel]') }}
          body: |
